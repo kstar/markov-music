@@ -16,12 +16,16 @@ N_STATES = N_UNIGRAMS**N_GRAMS;
 
 # Create state variable
 state = 0;
+count = 0;
 
 # Read file
 f = open( FILE_NAME, 'r' );
 
 for line in f:
     unigram = int( line );
-#    print "Unigram: " + str( unigram )
-    state = (state * N_UNIGRAMS + unigram) % N_STATES;
-    print state
+    count += 1;
+    state = (state * N_UNIGRAMS + unigram) % N_STATES; # Like a base-N_UNIGRAMS shift register with N_GRAMS memory locations
+    if count % N_GRAMS == 0:
+        print state
+        count = 0
+
