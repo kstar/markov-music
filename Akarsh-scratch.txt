@@ -1,0 +1,77 @@
+LOOKING INTO A MIDI FILE FOR REPRESENTATION:
+============================================
+
+* To find the tonal range of a track:
+
+mididump.py /tmp/bwv1041a-solo.mid  | grep midi.NoteO.*Event | sed 's/.*data=\[\(.*\)\].*$/\1/' | awk -F',' '{ print $1 }' | sort -n | uniq
+
+* Find possible note velocities:
+
+mididump.py /tmp/bwv1041a-solo.mid  | grep midi.NoteO.*Event | sed 's/.*data=\[\(.*\)\].*$/\1/' | awk -F',' '{ print $2 }' | sort -n | uniq
+
+* Find possible tick intervals:
+
+mididump.py /tmp/bwv1041a-solo.mid  | grep midi.NoteO.*Event | sed 's/.*tick=\([0-9]*\).*$/\1/' | sort -n | uniq
+
+* Count the number of 0 tick interals:
+
+mididump.py /tmp/bwv1041a-solo.mid  | grep midi.NoteO.*Event | sed 's/.*tick=\([0-9]*\).*$/\1/' | sort -n | grep 0 | wc -l
+
+CASE OF BWV1041A-SOLO.MID:
+==========================
+
+* Pruned down to one track
+
+* Ignore any chords on the violin
+
+* => 32 note range (including non-used ones for simplicity), plus OFF state = 33 states for 1-grams
+
+* Least tick resolution = 60. i.e. one "unit" of time is 60 ticks. Approximate anything else by nearest multiple of 60.
+
+* Largest tick count = 1080 => max of 18 units.
+
+* Lowest note = 56
+
+OUTLINE OF THE MIDI -> UNIGRAMS CODE:
+=====================================
+
+For now, we will keep it simple and assume single channel, no polyphony
+
++ Specify the following constants:
+  1. FILE_NAME: Name of the MIDI file (=bwv1041a-solo.mid for example)
+  2. BASE_TICK: Time unit in ticks (=60 for bwv1041a-solo.mid)
+  3. N_NOTES: Number of notes used in the track (=32 for bwv1041a-solo.mid)
+  4. LOWEST_NOTE: Number corresponding to the lowest note (=56 for bwv1041a-solo.mid)
+
++ Read the states from the file
+  
+  Because of no polyphony, each NoteOffEvent == set state to 0 if current state + LOWEST_NOTE - 1 matches the note given in the NoteOffEvent. Otherwise, ignore.
+  
+  Each NoteOnEvent == set state to data[0] - LOWEST_NOTE + 1
+
+  Divide number of ticks by BASE_TICK, round to nearest int, and write the state into the file those many times
+
+OUTLINE OF UNIGRAMS -> N-GRAMS CODE:
+====================================
+
++ Specify the following constants:
+  1. FILE_NAME: Name of the State List file
+  2. N_UNIGRAMS: Number of possible unigram states
+  3. N_GRAMS: n in Markov n-grams (=2 for starters)
+
++ Compute state space size 'N'
+
+  N_STATES = (N_UNIGRAMS)^(N_GRAMS)
+
++ Create an N-gram state variable, initialize to 0
+
+  unsigned long state = 0 # Hopefully, will not overflow!!!
+
++ Read unigram file and add to the n-gram state
+
+  state += unigram * N_UNIGRAMS
+  state %= N_STATES
+
+  Write the n-gram state
+
+
