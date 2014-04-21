@@ -2,13 +2,18 @@
 
 import numpy as np
 import scipy as sp
-
+from scipy.sparse import lil_matrix
 
 
 # Function to read input file and increment corresponding elements of the matrix.
 
-def learn(inputdata,transprob):
-  	old_state = 1 # Too lazy to tell it what to do for the first value it reads. For some reason it seems to be okay even if I do not specify this -- but that would be bad handling of an indefinite edge case
+def learn(inputdata,spacesize=34*34):
+  	old_state = 0 # Too lazy to tell it what to do for the first value it reads. For some reason it seems to be okay even if I do not specify this -- but that would be bad handling of an indefinite edge case
+
+	transprob = np.zeros((spacesize,spacesize))
+	
+	#transprob = lil_matrix((spacesize,spacesize))
+	#transprob.tocsr()
 
 	for curr_state in np.nditer(inputdata):
 	  transprob[old_state,curr_state] = transprob[old_state,curr_state] + 1
@@ -26,16 +31,21 @@ def learn(inputdata,transprob):
 	#transprob[nonzero] = transprob[nonzero] / rowsums[nonzero,np.newaxis] # Seems to be called broadcasting
 	#transprob = normtransprob
 
+	return transprob
+
+
+
+
 # Sparse matrix for storing transition probabilities
-space_size = 10^2 # Can be made as an argument to the function later -- hardcoded N 
-transitionprob = np.zeros((space_size,space_size))
+space_size = 34*34 # Can be made as an argument to the function later -- hardcoded N 
 
 # Actually readin the data from file
-trainingdata = np.fromfile("trainingmusic.dat",dtype=int,count=-1,sep="\n")
+#trainingdata = np.fromfile("digrams.dat",dtype=int,count=-1,sep="\n")
 
 # LEARNING
 
-learn(trainingdata,transitionprob)
+#learn(trainingdata)
+#print transitionprob
 
 # Storing it as a sparse matrix -- ONLY IF THERE IS A NEED
 # sparse_transprob = sp.sparse.csr_matrix(transprob)
