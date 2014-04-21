@@ -69,7 +69,8 @@ OUTLINE OF UNIGRAMS -> N-GRAMS CODE:
 
 + Read unigram file and add to the n-gram state
 
-  state += unigram * N_UNIGRAMS
+  state *= N_UNIGRAMS
+  state += unigram
   state %= N_STATES
 
   Write the n-gram state
