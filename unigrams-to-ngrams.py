@@ -6,7 +6,7 @@
 
 # Essential constants. See appropriate README to figure out how to adjust these
 FILE_NAME = "unigrams.dat";
-N_UNIGRAMS = 33;
+N_UNIGRAMS = 34;
 N_GRAMS = 2;
 
 # Compute state-space size

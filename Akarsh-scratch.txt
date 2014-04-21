@@ -24,7 +24,7 @@ CASE OF BWV1041A-SOLO.MID:
 
 * Ignore any chords on the violin
 
-* => 32 note range (including non-used ones for simplicity), plus OFF state = 33 states for 1-grams
+* => 33 note range (including non-used ones for simplicity), plus OFF state = 34 states for 1-grams
 
 * Least tick resolution = 60. i.e. one "unit" of time is 60 ticks. Approximate anything else by nearest multiple of 60.
 

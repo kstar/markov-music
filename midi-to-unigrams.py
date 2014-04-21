@@ -9,7 +9,7 @@ import midi
 # Essential constants. See appropriate README to figure out how to adjust these
 FILE_NAME = "/tmp/bwv1041a-solo.mid";
 BASE_TICK = 60;
-N_NOTES = 32;
+N_NOTES = 33;
 LOWEST_NOTE = 56;
 
 # Initializations
