@@ -4,11 +4,9 @@
 # Given MIDI file, with some essential details, write out the unigram state transitions
 #
 
-# Essential constants. See appropriate README to figure out how to adjust these
-
 import midi
-import re
 
+# Essential constants. See appropriate README to figure out how to adjust these
 FILE_NAME = "/tmp/bwv1041a-solo.mid";
 BASE_TICK = 60;
 N_NOTES = 32;
