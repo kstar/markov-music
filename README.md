@@ -40,3 +40,10 @@
    MIDI file (second argument) as command-line arguments. Tempo,
    instrument, transpose and other settings are specified in the
    python script.
+
+# Conceptual reading
+
+For a simple introduction to the concept of Markov chains, check <http://austingwalters.com/introduction-to-markov-processes/>
+
+
+
